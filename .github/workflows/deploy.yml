@@ -118,7 +118,7 @@ jobs:
             --service "$ECS_SERVICE" \
             --force-new-deployment
 
-            - name: deploy chat
+      - name: deploy chat
         env:
           ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}
           ECS_SERVICE: ${{ secrets.CHAT_SERVICE }}
@@ -147,7 +147,7 @@ jobs:
             --cluster "$ECS_CLUSTER" \
             --service "$ECS_SERVICE" \
             --force-new-deployment
-            
+
   deploy-frontend:
     needs: deploy-backend
     runs-on: ubuntu-latest 
