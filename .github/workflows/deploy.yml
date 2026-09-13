@@ -103,31 +103,51 @@ jobs:
           ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}
           GATEWAY_SERVICE: ${{ secrets.GATEWAY_SERVICE }}
         run: |
-          echo "ECS_CLUSTER is set: $([ -n "$ECS_CLUSTER" ] && echo yes || echo no)"
-          echo "GATEWAY_SERVICE is set: $([ -n "$GATEWAY_SERVICE" ] && echo yes || echo no)"
-
           aws ecs update-service \
             --cluster "$ECS_CLUSTER" \
             --service "$GATEWAY_SERVICE" \
             --force-new-deployment
-            
+
       - name: deploy auth
+        env:
+          ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}
+          ECS_SERVICE: ${{ secrets.AUTH_SERVICE }}
         run: |
-          aws ecs update-service --cluster ${{secrets.ECS_CLUSTER}} --service ${{secrets.AUTH_SERVICE}} --force-new-deployment
+          aws ecs update-service \
+            --cluster "$ECS_CLUSTER" \
+            --service "$ECS_SERVICE" \
+            --force-new-deployment
 
-      - name: deploy chat
+            - name: deploy chat
+        env:
+          ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}
+          ECS_SERVICE: ${{ secrets.CHAT_SERVICE }}
         run: |
-          aws ecs update-service --cluster ${{secrets.ECS_CLUSTER}} --service ${{secrets.CHAT_SERVICE}} --force-new-deployment          
-
+          aws ecs update-service \
+            --cluster "$ECS_CLUSTER" \
+            --service "$ECS_SERVICE" \
+            --force-new-deployment
 
       - name: deploy agent
+        env:
+          ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}
+          ECS_SERVICE: ${{ secrets.AGENT_SERVICE }}
         run: |
-          aws ecs update-service cluster ${{secrets.ECS_CLUSTER}} --service ${{secrets.AGENT_SERVICE}} --force-new-deployment
+          aws ecs update-service \
+            --cluster "$ECS_CLUSTER" \
+            --service "$ECS_SERVICE" \
+            --force-new-deployment
 
       - name: deploy billing
+        env:
+          ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}
+          ECS_SERVICE: ${{ secrets.BILLING_SERVICE }}
         run: |
-          aws ecs update-service --cluster ${{secrets.ECS_CLUSTER}} --service ${{secrets.BILLING_SERVICE}} --force-new-deployment  
-
+          aws ecs update-service \
+            --cluster "$ECS_CLUSTER" \
+            --service "$ECS_SERVICE" \
+            --force-new-deployment
+            
   deploy-frontend:
     needs: deploy-backend
     runs-on: ubuntu-latest 
